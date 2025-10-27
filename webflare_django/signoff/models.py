@@ -3,7 +3,7 @@ from django.utils import timezone
 
 
 class SignOff(models.Model):
-    provider = models.CharField(max_length=255, default='WebFlare')
+    provider = models.CharField(max_length=255, default='WebFlare (Daniel Picciau)')
     client = models.CharField(max_length=255)
     project = models.CharField(max_length=255)
     date = models.DateField(default=timezone.now)
