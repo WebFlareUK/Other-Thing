@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Project Sign-Off - WebFlare</title>
+    <link rel="stylesheet" href="{% static 'signoff/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="{% static 'signoff/WebFlare-Logo.png' %}" alt="WebFlare" class="logo">
+            </div>
+        </div>
+
+        <div class="content">
+            <h1>Thank You!</h1>
+            <p class="intro-text">Your project sign-off has been successfully submitted. A copy has been saved in our records.</p>
+            
+            {% if signoff and signoff.pdf_copy %}
+            <div class="download-section">
+                <p>You can download a copy of your signed form here:</p>
+                <a href="{{ signoff.pdf_copy.url }}" class="btn-action" download>Download Signed Form (PDF)</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

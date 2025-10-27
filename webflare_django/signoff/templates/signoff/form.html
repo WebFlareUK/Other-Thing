@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Sign-Off Agreement - WebFlare</title>
+    <link rel="stylesheet" href="{% static 'signoff/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        {% if not preview_mode %}
+        <form method="post" id="signoffForm">
+            {% csrf_token %}
+        {% endif %}
+            <div class="header">
+                <div class="logo-container">
+                    <img src="{% static 'signoff/WebFlare-Logo.png' %}" alt="WebFlare" class="logo">
+                    <div class="doc-title">
+                        <h1>Project Sign-Off Agreement</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="project-info">
+                    <div class="info-grid">
+                        <label class="info-label">Provider:</label>
+                        <div class="info-value">{{ form.provider.value|default:'WebFlare' }}</div>
+                        <input type="hidden" name="provider" value="WebFlare">
+
+                        <label class="info-label">Client:</label>
+                        {{ form.client }}
+
+                        <label class="info-label">Project:</label>
+                        {{ form.project }}
+
+                        <label class="info-label">Date:</label>
+                        {{ form.date }}
+                    </div>
+                </div>
+
+                <h2>Summary of Services Delivered</h2>
+                <p class="intro-text">This document confirms the completion of the following services by WebFlare (Daniel Picciau) for Safe Let Property Management LTD:</p>
+
+                <h3>Core Project Services</h3>
+                <div class="services-list">
+                    <div class="service-card">
+                        <h4>Home Page</h4>
+                        <p>Full design and build of a new professional landing page.</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Meet The Team Page</h4>
+                        <p>Creation of a page to introduce the company directors.</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Contact Us Page</h4>
+                        <p>A dedicated contact page with an integrated form to capture new leads.</p>
+                    </div>
+                </div>
+
+                <h3>Complimentary Services Included</h3>
+                <div class="services-list">
+                    <div class="service-card">
+                        <h4>Site-Wide Enhancements</h4>
+                        <p>Modified the main navigation bar and footer for site-wide consistency.</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Mobile & Desktop Optimization</h4>
+                        <p>Ensured all new pages are fully responsive and functional on all device sizes.</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>SEO Foundations</h4>
+                        <p>Implemented on-page Search Engine Optimization best practices.</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Collaborative Revisions</h4>
+                        <p>Included feedback and update rounds to meet the client's vision.</p>
+                    </div>
+                </div>
+
+                
+
+                <h2>Client Acceptance & Permissions</h2>
+
+                <div class="checkbox-item" id="cb-satisfaction" onclick="toggleCheckbox(this)">
+                    <div class="checkbox-header">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="checkbox-content">
+                            <div class="checkbox-title">1. Project Satisfaction</div>
+                            <div class="checkbox-text">I confirm that the services listed above have been completed in a timely and professional manner, and I am satisfied with the final website deliverables.</div>
+                        </div>
+                    </div>
+                    {{ form.project_satisfaction }}
+                </div>
+
+                <div class="checkbox-item" id="cb-portfolio" onclick="toggleCheckbox(this)">
+                    <div class="checkbox-header">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="checkbox-content">
+                            <div class="checkbox-title">2. Portfolio & Marketing Permission</div>
+                            <div class="checkbox-text">I grant permission to WebFlare (Daniel Picciau) to use the Safe Let Property Management website as an example of their work in portfolios, case studies, social media, and other marketing materials.</div>
+                        </div>
+                    </div>
+                    {{ form.portfolio_permission }}
+                </div>
+
+                <div class="checkbox-item" id="cb-testimonial">
+                    <div class="checkbox-header" onclick="toggleCheckbox(this.parentElement)">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="checkbox-content">
+                            <div class="checkbox-title">3. Testimonial (Optional)</div>
+                            <div class="checkbox-text">I am willing to provide a testimonial for WebFlare (Daniel Picciau) regarding the quality of their work and service.</div>
+                        </div>
+                    </div>
+                    {{ form.testimonial_opt_in }}
+
+                    <div class="testimonial-container" onclick="event.stopPropagation()">
+                        <label class="signature-label">Rating</label>
+                        <div class="star-rating">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+
+                        <label class="signature-label" for="id_testimonial_text">Your Testimonial</label>
+                        {{ form.testimonial_text }}
+
+                        <div class="testimonial-tips">
+                            <strong>Tips for writing a helpful testimonial:</strong>
+                            <ul>
+                                <li>Mention specific aspects of our service that impressed you</li>
+                                <li>Share any notable results or improvements to your business</li>
+                                <li>Describe your experience working with our team</li>
+                                <li>Include any specific challenges we helped you overcome</li>
+                                <li>Explain why you would recommend WebFlare to others</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Future Services Interest</h2>
+                <p class="intro-text">Quickly mark any services you might consider in the future. (Click to expand)</p>
+
+                <details class="compact-services">
+                    <summary>Optional future services — expand to view</summary>
+                    <ul class="compact-list">
+                        <li><label>{{ form.interested_extra_pages }} Extra page <span class="compact-desc">— using existing layout</span> <span class="compact-price">£40–£60</span></label></li>
+                        <li><label>{{ form.interested_gallery }} Gallery / Portfolio <span class="compact-desc">— lightbox & styling</span> <span class="compact-price">£60–£80</span></label></li>
+                        <li><label>{{ form.interested_booking }} Booking system <span class="compact-desc">— scheduling integration</span> <span class="compact-price">£75–£120</span></label></li>
+                        <li><label>{{ form.interested_blog }} Blog / News <span class="compact-desc">— blog layout & tags</span> <span class="compact-price">£60–£90</span></label></li>
+                        <li><label>{{ form.interested_email }} Email setup <span class="compact-desc">— DNS & provider linking</span> <span class="compact-price">£40–£60</span></label></li>
+                        <li><label>{{ form.interested_seo }} SEO setup <span class="compact-desc">— on-page optimisation</span> <span class="compact-price">£50–£80</span></label></li>
+                        <li><label>{{ form.interested_social }} Social feed <span class="compact-desc">— Instagram/Facebook feed</span> <span class="compact-price">£30–£50</span></label></li>
+                        <li><label>{{ form.interested_ecommerce }} E-commerce <span class="compact-desc">— product pages & checkout</span> <span class="compact-price">£120–£200</span></label></li>
+                        <li><label>{{ form.interested_maintenance }} Hosting & maintenance <span class="compact-desc">— monthly upkeep</span> <span class="compact-price">£10–£20/mo</span></label></li>
+                    </ul>
+                </details>
+
+                <div class="signature-section">
+                    <h2 style="margin-top: 0; border: none; padding-bottom: 0;">Authorized Signature</h2>
+                    <p class="intro-text" style="margin-top: 10px; margin-bottom: 25px;">Please complete all fields below to authorize this agreement.</p>
+
+                    <div class="signature-field">
+                        <label class="signature-label" for="id_signer_name">Full Name</label>
+                        {{ form.signer_name }}
+                    </div>
+
+                    <div class="signature-grid">
+                        <div class="signature-field">
+                            <label class="signature-label" for="id_signer_title">Title</label>
+                            {{ form.signer_title }}
+                        </div>
+                        <div class="signature-field">
+                            <label class="signature-label" for="id_signer_date">Date</label>
+                            {{ form.signer_date }}
+                        </div>
+                    </div>
+
+                    <div class="signature-field">
+                        <label class="signature-label">Signature</label>
+                        <div class="signature-canvas-container">
+                            <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+                            <div class="signature-buttons">
+                                <button type="button" class="btn" id="clearSignature">Clear Signature</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="signature_data" id="signatureData">
+
+                <div style="margin-top:20px;">
+                    <button type="submit" class="btn-action">Submit</button>
+                </div>
+
+            </div>
+        {% if not preview_mode %}
+        </form>
+        {% endif %}
+    </div>
+
+    {% if not preview_mode %}
+    <div class="action-buttons no-print">
+        <button type="button" id="printPdfBtn" class="btn-action">Save as PDF</button>
+    </div>
+    {% endif %}
+
+    <script src="{% static 'signoff/signoff.js' %}"></script>
+</body>
+</html>

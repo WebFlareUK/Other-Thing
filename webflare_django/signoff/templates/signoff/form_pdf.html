@@ -1,0 +1,467 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Sign-Off Agreement - WebFlare</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        /* Define core colors for PDF output (avoid relying on CSS variables not present in PDF engine) */
+        :root{
+            --bg: #ffffff;
+            --card: #ffffff;
+            --muted: #64748b;
+            --text: #0f172a;
+            --brand: #2563eb;
+            --accent: #f59e0b;
+            --border: #e6eef8;
+        }
+
+        body {
+            margin: 0;
+            padding: 36px;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 36px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg,#ffffff,#fbfdff);
+        }
+
+        .logo {
+            height: 56px;
+            width: auto;
+        }
+
+        .doc-title h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .content {
+            padding: 28px 36px;
+        }
+
+        .project-info {
+            background: #f8fbff;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 10px 20px;
+            align-items: center;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        h2 {
+            margin-top: 28px;
+            margin-bottom: 12px;
+            font-size: 18px;
+            border-bottom: 2px solid #eef4ff;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .intro-text {
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .service-card {
+            padding: 14px 0 14px 24px;
+            border-bottom: 1px solid #f1f6fb;
+            position: relative;
+        }
+
+        .service-card:last-child {
+            border-bottom: none;
+        }
+
+        .service-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .service-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .service-card::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 19px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--brand);
+            opacity: 0.6;
+        }
+
+        .checkbox-item {
+            position: relative;
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 10px;
+            margin: 14px 0;
+        }
+
+        .checkbox-header {
+            display: flex;
+            gap: 14px;
+        }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            border: 2px solid #c7d2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            flex-shrink: 0;
+            font-weight: 700;
+            color: transparent;
+        }
+
+        /* hide checkmark by default; show when container has 'checked' */
+        .checkbox .checkmark { display: none; }
+        .checkbox-item.checked .checkbox {
+            background: var(--brand);
+            border-color: var(--brand);
+            color: #fff;
+        }
+        .checkbox-item.checked .checkmark {
+            display: block;
+            color: #fff;
+        }
+
+        .checkbox-content {
+            flex: 1;
+        }
+
+        .checkbox-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .checkbox-text {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .testimonial-container {
+            margin-top: 12px;
+            padding: 14px;
+            background: #f8fbff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .star-rating {
+            color: var(--accent);
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .signature-section {
+            margin-top: 28px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #f1f6fb;
+            border-radius: 10px;
+        }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .signature-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .signature-image {
+            max-width: 300px;
+            margin-top: 10px;
+        }
+
+        @page {
+            margin: 0;
+            size: A4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="file://{{ logo_path }}" alt="WebFlare" class="logo">
+                <div class="doc-title">
+                    <h1>Project Sign-Off Agreement</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="project-info">
+                <div class="info-grid">
+                    <div class="info-label">Provider:</div>
+                    <div class="info-value">{{ signoff.provider }}</div>
+
+                    <div class="info-label">Client:</div>
+                    <div class="info-value">{{ signoff.client }}</div>
+
+                    <div class="info-label">Project:</div>
+                    <div class="info-value">{{ signoff.project }}</div>
+
+                    <div class="info-label">Date:</div>
+                    <div class="info-value">{{ signoff.date }}</div>
+                </div>
+            </div>
+
+            <h2>Summary of Services Delivered</h2>
+            <p class="intro-text">This document confirms the completion of the following services by WebFlare for {{ signoff.client }}:</p>
+
+            <h3>Core Project Services</h3>
+            <div class="services-list">
+                <div class="service-card">
+                    <h4>Home Page</h4>
+                    <p>Full design and build of a new professional landing page.</p>
+                </div>
+                <div class="service-card">
+                    <h4>Meet The Team Page</h4>
+                    <p>Creation of a page to introduce the company directors.</p>
+                </div>
+                <div class="service-card">
+                    <h4>Contact Us Page</h4>
+                    <p>A dedicated contact page with an integrated form to capture new leads.</p>
+                </div>
+            </div>
+
+            <h3>Complimentary Services Included</h3>
+            <div class="services-list">
+                <div class="service-card">
+                    <h4>Site-Wide Enhancements</h4>
+                    <p>Modified the main navigation bar and footer for site-wide consistency.</p>
+                </div>
+                <div class="service-card">
+                    <h4>Mobile & Desktop Optimization</h4>
+                    <p>Ensured all new pages are fully responsive and functional on all device sizes.</p>
+                </div>
+                <div class="service-card">
+                    <h4>SEO Foundations</h4>
+                    <p>Implemented on-page Search Engine Optimization best practices.</p>
+                </div>
+                <div class="service-card">
+                    <h4>Collaborative Revisions</h4>
+                    <p>Included feedback and update rounds to meet the client's vision.</p>
+                </div>
+            </div>
+
+            <h2>Client Acceptance & Permissions</h2>
+
+            <div class="checkbox-item {% if signoff.project_satisfaction %}checked{% endif %}">
+                <div class="checkbox-header">
+                    <div class="checkbox"><span class="checkmark">✓</span></div>
+                    <div class="checkbox-content">
+                        <div class="checkbox-title">1. Project Satisfaction</div>
+                        <div class="checkbox-text">I confirm that the services listed above have been completed in a timely and professional manner, and I am satisfied with the final website deliverables.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkbox-item {% if signoff.portfolio_permission %}checked{% endif %}">
+                <div class="checkbox-header">
+                    <div class="checkbox"><span class="checkmark">✓</span></div>
+                    <div class="checkbox-content">
+                        <div class="checkbox-title">2. Portfolio & Marketing Permission</div>
+                        <div class="checkbox-text">I grant permission to WebFlare to use the {{ signoff.client }} website as an example of their work in portfolios, case studies, social media, and other marketing materials.</div>
+                    </div>
+                </div>
+            </div>
+
+            {% if signoff.testimonial_opt_in %}
+            <div class="checkbox-item checked">
+                <div class="checkbox-header">
+                    <div class="checkbox"><span class="checkmark">✓</span></div>
+                    <div class="checkbox-content">
+                        <div class="checkbox-title">3. Testimonial</div>
+                        <div class="checkbox-text">I am willing to provide a testimonial for WebFlare regarding the quality of their work and service.</div>
+                    </div>
+                </div>
+
+                <div class="testimonial-container">
+                    <label class="signature-label">Rating</label>
+                    <div class="star-rating">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= signoff.rating %}★{% else %}☆{% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <label class="signature-label">Testimonial</label>
+                    <p>{{ signoff.testimonial_text }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+                            {% if signoff.interested_extra_pages or signoff.interested_gallery or signoff.interested_booking or signoff.interested_blog or signoff.interested_email or signoff.interested_seo or signoff.interested_social or signoff.interested_ecommerce or signoff.interested_maintenance %}
+                <h2>Future Services Interest</h2>
+                <p class="intro-text">The client has expressed interest in the following future services:</p>
+
+                <div class="services-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Add-On</th>
+                                <th>Description</th>
+                                <th>Suggested Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if signoff.interested_extra_pages %}
+                            <tr>
+                                <td>Extra page</td>
+                                <td>Using existing layout style</td>
+                                <td>£40–£60 each</td>
+                            </tr>
+                            {% endif %}
+                            {% if signoff.interested_gallery %}
+                            <tr>
+                                <td>Gallery / Portfolio page</td>
+                                <td>Custom gallery section, lightbox view, styling</td>
+                                <td>£60–£80</td>
+                            </tr>
+                            {% endif %}
+                            {% if signoff.interested_booking %}
+                            <tr>
+                                <td>Booking system</td>
+                                <td>Set up Squarespace Scheduling or link Calendly, with form automation</td>
+                                <td>£75–£120</td>
+                            </tr>
+                            {% endif %}
+                            {% if signoff.interested_blog %}
+                            <tr>
+                                <td>Blog / News section</td>
+                                <td>Blog layout, tags, summary blocks</td>
+                                <td>£60–£90</td>
+                            </tr>
+                            {% endif %}
+                            {% if signoff.interested_email %}
+                            <tr>
+                                <td>Email setup</td>
+                                <td>Connect custom domain email (Google Workspace / Microsoft 365)</td>
+                                <td>£40–£60</td>
+                            </tr>
+                            {% endif %}
+                            {% if signoff.interested_seo %}
+                            <tr>
+                                <td>SEO setup</td>
+                                <td>Title/description optimisation, keywords, sitemap, analytics link</td>
+                                <td>£50–£80</td>
+                            </tr>
+                            {% endif %}
+                            {% if signoff.interested_social %}
+                            <tr>
+                                <td>Social feed integration</td>
+                                <td>Instagram/Facebook live feed</td>
+                                <td>£30–£50</td>
+                            </tr>
+                            {% endif %}
+                            {% if signoff.interested_ecommerce %}
+                            <tr>
+                                <td>E-commerce setup</td>
+                                <td>Product pages, checkout, payment setup</td>
+                                <td>£120–£200</td>
+                            </tr>
+                            {% endif %}
+                            {% if signoff.interested_maintenance %}
+                            <tr>
+                                <td>Hosting & maintenance</td>
+                                <td>Monthly site checks, updates, backups</td>
+                                <td>£10–£20/month</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                <div class="signature-section">
+                    <h2 style="margin-top: 0; border: none; padding-bottom: 0;">Authorized Signature</h2>
+                <p class="intro-text" style="margin-top: 10px; margin-bottom: 25px;">This agreement has been authorized by:</p>
+
+                <div class="signature-field">
+                    <label>Full Name</label>
+                    <div>{{ signoff.signer_name }}</div>
+                </div>
+
+                <div class="signature-grid">
+                    <div class="signature-field">
+                        <label>Title</label>
+                        <div>{{ signoff.signer_title }}</div>
+                    </div>
+                    <div class="signature-field">
+                        <label>Date</label>
+                        <div>{{ signoff.signer_date }}</div>
+                    </div>
+                </div>
+
+                <div class="signature-field">
+                    <label>Signature</label>
+                    {% if signoff.signature_image %}
+                    <div>
+                        <img src="file://{{ signature_path }}" alt="Signature" class="signature-image">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
