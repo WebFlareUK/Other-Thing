@@ -23,6 +23,7 @@
             <div class="download-section">
                 <p>You can download a copy of your signed form here:</p>
                 <a href="{{ signoff.pdf_copy.url }}" class="btn-action" download>Download Signed Form (PDF)</a>
+                <a href="{% url 'signoff:delete' signoff.id %}" class="btn-action btn-delete">Delete Sign-Off</a>
             </div>
             {% endif %}
         </div>

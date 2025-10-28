@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deletion Confirmed - Project Sign-Off - WebFlare (Daniel Picciau)</title>
+    <link rel="stylesheet" href="{% static 'signoff/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="{% static 'signoff/WebFlare-Logo.png' %}" alt="WebFlare (Daniel Picciau)" class="logo">
+            </div>
+        </div>
+
+        <div class="content">
+            <h1>Deletion Confirmed</h1>
+            <p class="intro-text">The sign-off has been successfully deleted.</p>
+            <a href="{% url 'signoff:form' %}" class="btn-action">Return to Form</a>
+        </div>
+    </div>
+</body>
+</html>

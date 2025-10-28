@@ -2,7 +2,7 @@ import base64
 import os
 from io import BytesIO
 from django.core.files.base import ContentFile
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
@@ -262,3 +262,11 @@ def thanks_view(request):
     from .models import SignOff
     signoff = SignOff.objects.order_by('-created_at').first()
     return render(request, 'signoff/thanks.html', {'signoff': signoff})
+
+def delete_signoff_view(request, signoff_id):
+    signoff = get_object_or_404(SignOff, id=signoff_id)
+    signoff.delete()
+    return redirect('signoff:delete_confirmation')
+
+def delete_confirmation_view(request):
+    return render(request, 'signoff/delete_confirmation.html')
