@@ -1,11 +1,13 @@
+# Add this line, often near STATIC_URL
 import os
 from pathlib import Path
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'REPLACE_WITH_A_SECURE_SECRET_FOR_PRODUCTION'
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = False
+# Find ALLOWED_HOSTS = [] and change it to:
+ALLOWED_HOSTS = ['webflareuk.pythonanywhere.com', '127.0.0.1'] 
+# Replace 'your-username' with your actual PA username
 
 INSTALLED_APPS = [
     'django.contrib.admin',
